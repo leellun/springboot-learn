@@ -1,0 +1,16 @@
+server:
+  port: 8094
+
+dubbo:
+  application:
+    name: user-service-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: zk-registry
+    address: zookeeper://192.168.66.11:2181
+  config-center:
+    address: zookeeper://192.168.66.11:2181
+  metadata-report:
+    address: zookeeper://192.168.66.11:2181
