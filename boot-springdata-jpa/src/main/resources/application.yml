@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/seata_storage
+    username: leellun
+    password: liulun666
+    hikari:
+      max-lifetime: 12000
+  jpa:
+    hibernate:
+      ddl-auto: update  #如果数据库中没有这个表 则根据entity直接创建
+    show-sql: true
