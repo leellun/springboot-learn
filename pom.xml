@@ -16,6 +16,7 @@
         <module>boot-rabbitmq</module>
         <module>boot-security</module>
         <module>boot-docker</module>
+        <module>boot-undertow</module>
     </modules>
     <name>springboot-learn</name>
     <properties>
