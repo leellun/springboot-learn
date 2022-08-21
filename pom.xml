@@ -15,6 +15,7 @@
         <module>boot-dubbo</module>
         <module>boot-rabbitmq</module>
         <module>boot-security</module>
+        <module>boot-docker</module>
     </modules>
     <name>springboot-learn</name>
     <properties>

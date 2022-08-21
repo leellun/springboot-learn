@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.newland</groupId>
+    <artifactId>boot-docker</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>boot-docker</name>
+    <description>Demo project for Spring Boot</description>
+    <properties>
+        <docker.image.prefix>harborcloud.com</docker.image.prefix>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <!--mvn spring-boot:build-image -Dhttps.protocols=TLSv1.2-->
+        <finalName>spring-web</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.2</version>
+                <configuration>
+                    <image>
+                        <!--镜像名称-->
+                        <name>${docker.image.prefix}/library/${project.name}:${project.version}</name>
+                        <!--生成镜像后是否推送到镜像仓库-->
+                        <publish>true</publish>
+                    </image>
+                    <docker>
+                        <!--docker环境远程管理地址，非镜像仓库地址-->
+                        <host>tcp://harborcloud.com:2375</host>
+                        <!--不使用TLS访问-->
+                        <tlsVerify>false</tlsVerify>
+                        <!--Docker推送镜像仓库配置-->
+                        <publishRegistry>
+                            <!--推送镜像仓库用户名-->
+                            <username>admin</username>
+                            <!--推送镜像仓库密码-->
+                            <password>Harbor12345</password>
+                            <!--推送镜像仓库地址-->
+                            <url>https://${docker.image.prefix}/library</url>
+                        </publishRegistry>
+                    </docker>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
