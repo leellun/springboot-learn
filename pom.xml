@@ -17,6 +17,7 @@
         <module>boot-security</module>
         <module>boot-docker</module>
         <module>boot-undertow</module>
+        <module>boot-mongodb</module>
     </modules>
     <name>springboot-learn</name>
     <properties>
