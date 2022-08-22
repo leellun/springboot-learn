@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.newland.sharejdbcclient.mapper.UserMapper">
+    <insert id="save" parameterType="com.newland.sharejdbcclient.model.User">
+        insert into t_user(id, name, create_time, sex)
+        values (#{id}, #{name}, #{createTime}, #{sex})
+    </insert>
+    <select id="get" resultType="com.newland.sharejdbcclient.model.User">
+        select *
+        from t_user
+        where id = #{id}
+    </select>
+</mapper>
