@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: canal
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 这里的test和canal监听的不在同一台服务器 上
+    url: jdbc:mysql://localhost:3308/test?serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+    username: leellun
+    password: liulun666
