@@ -17,3 +17,4 @@
 ### 11.5 curator锁 zkcurator-lock
 ## 12 mongodb boot-mongodb
 ## 13 sharejdbc boot-sharejdbc
+## 14 canal boot-canal

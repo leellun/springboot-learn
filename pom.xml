@@ -21,6 +21,7 @@
         <module>boot-distributed-lock</module>
         <module>boot-sharejdbc</module>
         <module>boot-canal</module>
+        <module>boot-mybatisplus</module>
     </modules>
     <name>springboot-learn</name>
     <properties>
@@ -174,7 +175,11 @@
                 <artifactId>commons-dbutils</artifactId>
                 <version>${commons-dbutils.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.83</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>

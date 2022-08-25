@@ -4,8 +4,4 @@ server:
 spring:
   data:
     mongodb:
-      host: 192.168.66.11
-      port: 27017
-      database: test
-      username: leellun
-      password: 123456
+      uri: mongodb://leellun:123456@192.168.66.11:27017/admin

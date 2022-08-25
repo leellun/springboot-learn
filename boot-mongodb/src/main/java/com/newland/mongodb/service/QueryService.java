@@ -45,7 +45,7 @@ public class QueryService {
      */
     public Object findById() {
         // 设置查询的文档 ID
-        String id = "1";
+        String id = "11";
         // 根据文档ID查询集合中文档数据，并转换为对应 Java 对象
         User user = mongoTemplate.findById(id, User.class, COLLECTION_NAME);
         // 输出结果
