@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.Date;
@@ -22,11 +25,12 @@ public class User {
      */
     @MongoId
     private String id;
+    @Indexed(direction = IndexDirection.ASCENDING, unique = true)
     private String name;
     private String sex;
     private Integer salary;
     private Integer age;
-    @JsonFormat( pattern ="yyyy-MM-dd", timezone ="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
     private String remake;
     private Status status;
