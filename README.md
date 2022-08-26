@@ -17,4 +17,5 @@
 ### 11.5 curator锁 zkcurator-lock
 ## 12 mongodb boot-mongodb
 ## 13 sharejdbc boot-sharejdbc
-## 14 canal boot-canal
+## 14 增量订阅&消费组件canal boot-canal
+## 15 高性能对象存储minio boot-minio
