@@ -1,9 +1,10 @@
 server:
   port: 8080
 spring:
-  data:
-    elasticsearch:
-      client:
-        reactive:
-          endpoints: 192.168.10.103:9200
-          connection-timeout: 3000
+  elasticsearch:
+    rest:
+      uris: http://192.168.66.11:9200
+      username: leellun
+      password: leellun
+      connection-timeout: 60000
+      read-timeout: 30s
