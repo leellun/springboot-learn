@@ -13,6 +13,8 @@
         <module>mysql-lock</module>
         <module>redis-lock</module>
         <module>zk-lock</module>
+        <module>redisson-lock</module>
+        <module>zkcurator-lock</module>
     </modules>
     <dependencies>
         <dependency>

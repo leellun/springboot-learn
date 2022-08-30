@@ -5,6 +5,7 @@ import com.google.common.hash.Funnels;
 
 /**
  * Guava版布隆过滤器
+ * 特别注意：Guava 提供的布隆过滤器，有个很大的缺陷就是只能单机使用。为了解决这个问题，后面可以考虑使用 Redis 提供的布隆过滤器。
  */
 public class BloomFilterTest {
     /**
