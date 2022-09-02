@@ -3,7 +3,6 @@ package com.example.security.config;
 import com.example.security.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,13 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("userDetailService")
     private UserDetailsService userDetailsService;
-    @Value("${picture.prefix}")
-    private String imgPath;
 
     @Bean
     public JwtAuthenticationTokenFilter authenticationTokenFilter() {
@@ -42,7 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
     // 装载BCrypt密码编码器
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-
+        JwtAuthenticationTokenFilter filter = authenticationTokenFilter();
         httpSecurity.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity
                 // 由于使用的是JWT，我们这里不需要csrf
@@ -81,9 +77,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/static/**"
                 ).permitAll()
                 .antMatchers("/api/user/login").permitAll()
-                .antMatchers("/api/**/f/**").permitAll()
-                .antMatchers("/api/picture/ckupload").permitAll()
-                .antMatchers(imgPath+"/**").permitAll()
                 .antMatchers("/login").permitAll()
                 // 对于获取token的rest api要允许匿名访问
                 .antMatchers("/auth/**").permitAll()
