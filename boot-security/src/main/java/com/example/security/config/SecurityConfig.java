@@ -29,15 +29,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
-    @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    @Override
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
                 // 设置UserDetailsService
                 .userDetailsService(this.userDetailsService)
                 // 使用BCrypt进行密码的hash
                 .passwordEncoder(passwordEncoder());
     }
-
 
     // 装载BCrypt密码编码器
     @Bean
