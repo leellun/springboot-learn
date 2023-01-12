@@ -22,8 +22,8 @@ public class FileUploader {
         try {
             MinioClient minioClient = MinioClient.builder()
                     .httpClient(getUnsafeOkHttpsClient())
-                    .credentials("K8sgt80o0TzhWRGg", "t7l2L6l3pVptLEWsfdZa4iaxadptD2aB")
-                    .endpoint("192.168.66.31", 9000, false)
+                    .credentials("jGtLBvw6HhnW9Nsc", "BzDmbL3ZCPERFHPxB5jOnf0w7l48DqOu")
+                    .endpoint("192.168.100.100", 31582, false)
                     .build();
 
             // 检查存储桶是否已经存在

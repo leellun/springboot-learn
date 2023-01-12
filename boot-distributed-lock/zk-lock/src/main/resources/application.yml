@@ -1,9 +1,9 @@
 server:
   port: 2347
 zk:
-  connectString: 192.168.10.103:2181
+  connectString: 192.168.100.100:31378
   curator:
     retryCount: 5 #重试次数
-    elapsedTimeMs: 5000
-    sessionTimeoutMs: 60000
-    connectionTimeoutMs: 5000
+    elapsedTimeMs: 10000
+    sessionTimeoutMs: 10000
+    connectionTimeoutMs: 10000
