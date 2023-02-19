@@ -15,12 +15,12 @@
     <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
         <!--生成mapper.xml时覆盖原文件-->
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
-        <plugin type="com.newland.mybatis.ServiceAndControllerGeneratorPlugin" >
+        <plugin type="com.mybatis.generator.ServiceAndControllerGeneratorPlugin" >
             <property name="targetProject" value="./src/main/java"/>
-            <property name="servicePackage" value="com.newland.mybatisxmlgenerator.service"/>
-            <property name="serviceImplPackage" value="com.newland.mybatisxmlgenerator.service.impl"/>
-            <property name="controllerPackage" value="com.newland.mybatisxmlgenerator.controller"/>
-            <property name="superDaoInterface" value="com.newland.mybatis.mapper.BaseMapper"/>
+            <property name="servicePackage" value="com.newland.mybatis.service"/>
+            <property name="serviceImplPackage" value="com.newland.mybatis.service.impl"/>
+            <property name="controllerPackage" value="com.newland.mybatis.controller"/>
+            <property name="superDaoInterface" value="com.mybatis.generator.mapper.BaseMapper"/>
             <!--UserService,该值则为Service-->
             <property name="serviceSuffix" value="Service"/>
             <property name="author" value="leellun"/>
@@ -79,7 +79,7 @@
         </javaTypeResolver>
 
         <!-- 生成实体类地址 -->
-        <javaModelGenerator targetPackage="com.newland.mybatisxmlgenerator.entity" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.newland.mybatis.entity" targetProject="src/main/java">
             <!-- 是否让 schema 作为包的后缀，默认为false -->
             <!--<property name="enableSubPackages" value="false"/>-->
             <!-- 是否针对string类型的字段在set方法中进行修剪，默认false -->
@@ -93,7 +93,7 @@
         </sqlMapGenerator>
 
         <!-- 生成 XxxMapper.java 接口-->
-        <javaClientGenerator targetPackage="com.newland.mybatisxmlgenerator.mapper" targetProject="src/main/java" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="com.newland.mybatis.mapper" targetProject="src/main/java" type="XMLMAPPER">
             <!--<property name="enableSubPackages" value="false"/>-->
         </javaClientGenerator>
 

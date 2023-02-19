@@ -1,4 +1,4 @@
-package com.newland.mybatis.mapper;
+package com.mybatis.generator.mapper;
 
 /**
  * base类型

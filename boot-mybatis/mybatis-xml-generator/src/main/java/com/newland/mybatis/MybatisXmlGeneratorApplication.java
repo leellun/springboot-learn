@@ -1,4 +1,4 @@
-package com.newland.mybatisxmlgenerator;
+package com.newland.mybatis;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

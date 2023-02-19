@@ -1,4 +1,4 @@
-package com.newland.mybatis;
+package com.mybatis.generator;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.mybatis.generator.api.GeneratedJavaFile;
@@ -333,6 +333,16 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
 
     @Override
     public boolean clientUpdateByPrimaryKeySelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
+    }
+
+    @Override
+    public boolean clientUpdateByPrimaryKeyWithBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
+    }
+
+    @Override
+    public boolean clientUpdateByPrimaryKeyWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
         return !StringUtils.hasText(superDaoInterface);
     }
 
