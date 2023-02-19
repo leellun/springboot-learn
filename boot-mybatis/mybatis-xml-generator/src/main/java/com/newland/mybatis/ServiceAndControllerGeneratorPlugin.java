@@ -308,6 +308,8 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         }
         interfaze.addJavaDocLine(" * @since " + getDateString());
         interfaze.addJavaDocLine(" */");
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.springframework.stereotype.Repository"));
+        interfaze.addAnnotation("@Repository");
         interfaze.addImportedType(new FullyQualifiedJavaType(superDaoInterface));
         interfaze.addImportedType(new FullyQualifiedJavaType(recordType));
         interfaze.addSuperInterface(new FullyQualifiedJavaType(getSimpleClassName(superDaoInterface) + "<" + modelName + ">"));
@@ -353,11 +355,12 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
             // 添加domain的注解
             topLevelClass.addAnnotation("@Data");
         }
-
         topLevelClass.addJavaDocLine("/**");
 
         String remarks = introspectedTable.getRemarks();
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("io.swagger.v3.oas.annotations.media.Schema"));
         if (StringUtility.stringHasValue(remarks)) {
+            topLevelClass.addAnnotation("@Schema(name =\""+remarks+"\")");
             String[] remarkLines = remarks.split(System.getProperty("line.separator"));
             for (String remarkLine : remarkLines) {
                 topLevelClass.addJavaDocLine(" * " + remarkLine);
@@ -384,6 +387,7 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         field.addJavaDocLine("/**");
         String remarks = introspectedColumn.getRemarks();
         if (StringUtility.stringHasValue(remarks)) {
+            field.addAnnotation("@Schema(name =\""+remarks+"\")");
             String[] remarkLines = remarks.split(System.getProperty("line.separator"));
             for (String remarkLine : remarkLines) {
                 field.addJavaDocLine(" * " + remarkLine);
