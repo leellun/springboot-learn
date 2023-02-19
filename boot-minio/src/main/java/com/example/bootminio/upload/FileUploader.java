@@ -1,10 +1,9 @@
 package com.example.bootminio.upload;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import io.minio.errors.MinioException;
+import io.minio.http.Method;
+import io.minio.messages.Tags;
 import okhttp3.OkHttpClient;
 
 import javax.net.ssl.*;
@@ -16,6 +15,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileUploader {
     public static void main(String[] args) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
@@ -35,13 +36,21 @@ public class FileUploader {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket("test").build());
             }
             FileInputStream fis = new FileInputStream("./pom.xml");
+            Map<String, String> headers = new HashMap<>();
+            headers.put("name", "pomtest.xml");
             // 使用putObject上传一个文件到存储桶中。
-            minioClient.putObject(PutObjectArgs.builder()
+            ObjectWriteResponse response = minioClient.putObject(PutObjectArgs.builder()
                     .bucket("test")
                     .object("pom.xml")
+                    .extraQueryParams(headers)
+                    .headers(headers)
+                    .tags(headers)
                     .stream(fis, fis.available(), -1)
                     .build());
-            System.out.println("pom.xml is successfully uploaded as pom.xml to `test` bucket.");
+            System.out.println("pom.xml is successfully uploaded as pom.xml to `test` bucket." + response.versionId());
+            Tags tags = minioClient.getObjectTags(GetObjectTagsArgs.builder().bucket("test").object("pom.xml").build());
+            System.out.println(tags.get().get("name"));
+            System.out.println(minioClient.getObject(GetPresignedObjectUrlArgs.builder().bucket("test").method(Method.GET).object("pom.xml").build()));
         } catch (MinioException e) {
             System.out.println("Error occurred: " + e);
         } catch (KeyManagementException e) {
@@ -75,7 +84,7 @@ public class FileUploader {
             sslContext.init(null, trustAllCerts, new SecureRandom());
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory,new X509TrustManager() {
+            builder.sslSocketFactory(sslSocketFactory, new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
 

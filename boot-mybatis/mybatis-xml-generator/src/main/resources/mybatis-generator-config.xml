@@ -13,18 +13,33 @@
         javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+
     -->
     <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
-
+        <plugin type="com.newland.mybatis.ServiceAndControllerGeneratorPlugin" >
+            <property name="targetProject" value="./src/main/java"/>
+            <property name="servicePackage" value="com.newland.mybatisxmlgenerator.service"/>
+            <property name="serviceImplPackage" value="com.newland.mybatisxmlgenerator.service.impl"/>
+            <property name="controllerPackage" value="com.newland.mybatisxmlgenerator.controller"/>
+            <!--UserService,该值则为Service-->
+            <property name="serviceSuffix" value="Service"/>
+            <property name="author" value="leellun"/>
+            <!--Service接口的父接口-->
+<!--            <property name="superServiceInterface" value="com.newland.boot.commons.service.GeneralService"/>-->
+            <!--ServiceImpl的父类-->
+<!--            <property name="superServiceImpl" value="com.newland.boot.commons.service.AbstractGeneralService"/>-->
+            <!--controller的父类接口-->
+<!--            <property name="superController" value="com.newland.boot.commons.controller.GeneralCrudController"/>-->
+        </plugin>
         <!-- 这个插件给生成的Java模型对象增加了equals和hashCode方法 -->
         <!--<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
 
         <!-- 注释 -->
         <commentGenerator>
             <!-- 是否不生成注释 -->
-            <property name="suppressAllComments" value="true"/>
+            <property name="suppressAllComments" value="false"/>
             <!-- 不希望生成的注释中包含时间戳 -->
-            <!--<property name="suppressDate" value="true"/>-->
+            <property name="suppressDate" value="true"/>
             <!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效-->
-            <!--<property name="addRemarkComments" value="true"/>-->
+            <property name="addRemarkComments" value="true"/>
+            <property name="add" value=""/>
         </commentGenerator>
 
 
@@ -33,8 +48,10 @@
                         connectionURL="${spring.datasource.url}"
                         userId="${spring.datasource.username}"
                         password="${spring.datasource.password}">
-            <!--高版本的 mysql-connector-java 需要设置 nullCatalogMeansCurrent=true-->
-            <property name="nullCatalogMeansCurrent" value="true"/>
+            <!-- 获取表注释 -->
+            <property name="useInformationSchema" value="true" />
+            <!--高版本的 mysql-connector-java 需要设置 nullCatalogMeansCurrent=true 会影响useInformationSchema-->
+<!--            <property name="nullCatalogMeansCurrent" value="true"/>-->
         </jdbcConnection>
 
         <!-- 类型转换 -->
@@ -56,7 +73,7 @@
         </javaTypeResolver>
 
         <!-- 生成实体类地址 -->
-        <javaModelGenerator targetPackage="com.newland.mybatisxmlgenerator.po" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.newland.mybatisxmlgenerator.entity" targetProject="src/main/java">
             <!-- 是否让 schema 作为包的后缀，默认为false -->
             <!--<property name="enableSubPackages" value="false"/>-->
             <!-- 是否针对string类型的字段在set方法中进行修剪，默认false -->
@@ -73,7 +90,6 @@
         <javaClientGenerator targetPackage="com.newland.mybatisxmlgenerator.dao" targetProject="src/main/java" type="XMLMAPPER">
             <!--<property name="enableSubPackages" value="false"/>-->
         </javaClientGenerator>
-
 
         <!-- schema为数据库名，oracle需要配置，mysql不需要配置。
              tableName为对应的数据库表名
