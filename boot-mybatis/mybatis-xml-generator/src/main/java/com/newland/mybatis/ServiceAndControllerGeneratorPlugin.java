@@ -6,6 +6,8 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.api.dom.kotlin.KotlinFile;
+import org.mybatis.generator.api.dom.kotlin.KotlinFunction;
 import org.mybatis.generator.internal.util.StringUtility;
 import org.springframework.util.StringUtils;
 
@@ -247,7 +249,6 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         clazz.addAnnotation("@RequestMapping(\"/" + firstCharToLowCase(modelName) + "\")");
         //添加@Api注解，并引入相应的类
         clazz.addImportedType(new FullyQualifiedJavaType("io.swagger.v3.oas.annotations.tags.Tag"));
-        String controllerSimpleName = controllerName.substring(controllerName.lastIndexOf(".") + 1);
         clazz.addAnnotation("@Tag(name = \"" + introspectedTable.getRemarks() + "\", description = \"" + introspectedTable.getRemarks() + "\")");
 
         //引入controller的父类和model，并添加泛型
@@ -289,6 +290,58 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
 
     protected String getDateString() {
         return DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+    }
+
+    protected String getSimpleClassName(String className) {
+        return className.substring(className.lastIndexOf(".") + 1);
+    }
+
+    @Override
+    public boolean clientGenerated(Interface interfaze, IntrospectedTable introspectedTable) {
+        recordType = introspectedTable.getBaseRecordType();
+        String modelName = recordType.substring(recordType.lastIndexOf(".") + 1);
+
+        interfaze.addJavaDocLine("/**");
+        interfaze.addJavaDocLine(" * " + introspectedTable.getRemarks() + " Mapper 接口");
+        if (StringUtils.hasText(author)) {
+            interfaze.addJavaDocLine(" * @author " + author);
+        }
+        interfaze.addJavaDocLine(" * @since " + getDateString());
+        interfaze.addJavaDocLine(" */");
+        interfaze.addImportedType(new FullyQualifiedJavaType(superDaoInterface));
+        interfaze.addImportedType(new FullyQualifiedJavaType(recordType));
+        interfaze.addSuperInterface(new FullyQualifiedJavaType(getSimpleClassName(superDaoInterface) + "<" + modelName + ">"));
+        return super.clientGenerated(interfaze, introspectedTable);
+    }
+
+    @Override
+    public boolean clientSelectByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
+    }
+
+    @Override
+    public boolean clientInsertMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
+    }
+
+    @Override
+    public boolean clientInsertSelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
+    }
+
+    @Override
+    public boolean clientUpdateByPrimaryKeySelectiveMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
+    }
+
+    @Override
+    public boolean clientDeleteByPrimaryKeyMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
+    }
+
+    @Override
+    public boolean clientSelectAllMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+        return !StringUtils.hasText(superDaoInterface);
     }
 
     @Override

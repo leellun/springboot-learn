@@ -13,11 +13,14 @@
         javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+
     -->
     <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!--生成mapper.xml时覆盖原文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
         <plugin type="com.newland.mybatis.ServiceAndControllerGeneratorPlugin" >
             <property name="targetProject" value="./src/main/java"/>
             <property name="servicePackage" value="com.newland.mybatisxmlgenerator.service"/>
             <property name="serviceImplPackage" value="com.newland.mybatisxmlgenerator.service.impl"/>
             <property name="controllerPackage" value="com.newland.mybatisxmlgenerator.controller"/>
+            <property name="superDaoInterface" value="com.newland.mybatis.mapper.BaseMapper"/>
             <!--UserService,该值则为Service-->
             <property name="serviceSuffix" value="Service"/>
             <property name="author" value="leellun"/>
@@ -90,7 +93,7 @@
         </sqlMapGenerator>
 
         <!-- 生成 XxxMapper.java 接口-->
-        <javaClientGenerator targetPackage="com.newland.mybatisxmlgenerator.dao" targetProject="src/main/java" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="com.newland.mybatisxmlgenerator.mapper" targetProject="src/main/java" type="XMLMAPPER">
             <!--<property name="enableSubPackages" value="false"/>-->
         </javaClientGenerator>
 
