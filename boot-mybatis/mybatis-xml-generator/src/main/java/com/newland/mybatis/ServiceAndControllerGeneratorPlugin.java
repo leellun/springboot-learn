@@ -1,17 +1,19 @@
 package com.newland.mybatis;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.mybatis.generator.api.GeneratedJavaFile;
+import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.*;
+import org.mybatis.generator.internal.util.StringUtility;
 import org.springframework.util.StringUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.lang.System.getProperties;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
@@ -88,6 +90,10 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
     private String serviceName;
     private String serviceImplName;
     private String controllerName;
+    /**
+     * 是否使用lombok
+     */
+    private boolean hasLombok;
 
     @Override
     public boolean validate(List<String> warnings) {
@@ -105,6 +111,10 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         controllerPackage = properties.getProperty("controllerPackage");
         superController = properties.getProperty("superController");
         author = properties.getProperty("author");
+        String hasLombokStr = properties.getProperty("hasLombok");
+        if (StringUtils.hasText(hasLombokStr)) {
+            hasLombok = Boolean.parseBoolean(hasLombokStr);
+        }
 
         return valid;
     }
@@ -140,11 +150,11 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         serviceInterface.setVisibility(JavaVisibility.PUBLIC);
         //添加类注释
         serviceInterface.addJavaDocLine("/**");
-        serviceInterface.addJavaDocLine(" * " + introspectedTable.getRemarks()+" 服务类");
-        if(StringUtils.hasText(author)){
+        serviceInterface.addJavaDocLine(" * " + introspectedTable.getRemarks() + " 服务类");
+        if (StringUtils.hasText(author)) {
             serviceInterface.addJavaDocLine(" * @author " + author);
         }
-        serviceInterface.addJavaDocLine(" * @since " + new SimpleDateFormat("YYYY-MM-DD").format(new Date()));
+        serviceInterface.addJavaDocLine(" * @since " + getDateString());
         serviceInterface.addJavaDocLine(" */");
 
         // 添加父接口
@@ -172,11 +182,11 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         clazz.setVisibility(JavaVisibility.PUBLIC);
         //添加类注释
         clazz.addJavaDocLine("/**");
-        clazz.addJavaDocLine(" * " + introspectedTable.getRemarks()+" 服务实现类");
-        if(StringUtils.hasText(author)){
+        clazz.addJavaDocLine(" * " + introspectedTable.getRemarks() + " 服务实现类");
+        if (StringUtils.hasText(author)) {
             clazz.addJavaDocLine(" * @author " + author);
         }
-        clazz.addJavaDocLine(" * @since " + new SimpleDateFormat("YYYY-MM-DD").format(new Date()));
+        clazz.addJavaDocLine(" * @since " + getDateString());
         clazz.addJavaDocLine(" */");
         //描述类 引入的类
         clazz.addImportedType(service);
@@ -222,11 +232,11 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         clazz.setVisibility(JavaVisibility.PUBLIC);
 
         clazz.addJavaDocLine("/**");
-        clazz.addJavaDocLine(" * " + introspectedTable.getRemarks()+" 控制器");
-        if(StringUtils.hasText(author)){
+        clazz.addJavaDocLine(" * " + introspectedTable.getRemarks() + " 控制器");
+        if (StringUtils.hasText(author)) {
             clazz.addJavaDocLine(" * @author " + author);
         }
-        clazz.addJavaDocLine(" * @since " + new SimpleDateFormat("YYYY-MM-DD").format(new Date()));
+        clazz.addJavaDocLine(" * @since " + getDateString());
         clazz.addJavaDocLine(" */");
 
         //添加@Controller注解，并引入相应的类
@@ -267,7 +277,6 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
         return gjf2;
     }
 
-
     private String firstCharToLowCase(String str) {
         char[] chars = new char[1];
         chars[0] = str.charAt(0);
@@ -276,5 +285,72 @@ public class ServiceAndControllerGeneratorPlugin extends PluginAdapter {
             return str.replaceFirst(temp, temp.toLowerCase());
         }
         return str;
+    }
+
+    protected String getDateString() {
+        return DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+    }
+
+    @Override
+    public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+        if (hasLombok) {
+            // 添加domain的import
+            topLevelClass.addImportedType("lombok.Data");
+
+            // 添加domain的注解
+            topLevelClass.addAnnotation("@Data");
+        }
+
+        topLevelClass.addJavaDocLine("/**");
+
+        String remarks = introspectedTable.getRemarks();
+        if (StringUtility.stringHasValue(remarks)) {
+            String[] remarkLines = remarks.split(System.getProperty("line.separator"));
+            for (String remarkLine : remarkLines) {
+                topLevelClass.addJavaDocLine(" * " + remarkLine);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" * ").append(introspectedTable.getFullyQualifiedTable());
+        topLevelClass.addJavaDocLine(sb.toString());
+        sb.setLength(0);
+        sb.append(" * @author ").append(getProperties().getProperty("user.name"));
+        topLevelClass.addJavaDocLine(sb.toString());
+        sb.setLength(0);
+        sb.append(" * @date ");
+        sb.append(getDateString());
+        topLevelClass.addJavaDocLine(sb.toString());
+        topLevelClass.addJavaDocLine(" */");
+        return true;
+    }
+
+    @Override
+    public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
+                                       IntrospectedTable introspectedTable, ModelClassType modelClassType) {
+        field.addJavaDocLine("/**");
+        String remarks = introspectedColumn.getRemarks();
+        if (StringUtility.stringHasValue(remarks)) {
+            String[] remarkLines = remarks.split(System.getProperty("line.separator"));
+            for (String remarkLine : remarkLines) {
+                field.addJavaDocLine(" * " + remarkLine);
+            }
+        }
+        field.addJavaDocLine(" */");
+        return true;
+    }
+
+    @Override
+    public boolean modelSetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
+                                              IntrospectedTable introspectedTable, ModelClassType modelClassType) {
+        // 不生成getter
+        return !hasLombok;
+    }
+
+    @Override
+    public boolean modelGetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
+                                              IntrospectedTable introspectedTable, ModelClassType modelClassType) {
+        // 不生成setter
+        return !hasLombok;
     }
 }

@@ -21,6 +21,7 @@
             <!--UserService,该值则为Service-->
             <property name="serviceSuffix" value="Service"/>
             <property name="author" value="leellun"/>
+            <property name="hasLombok" value="true"/>
             <!--Service接口的父接口-->
 <!--            <property name="superServiceInterface" value="com.newland.boot.commons.service.GeneralService"/>-->
             <!--ServiceImpl的父类-->
@@ -34,12 +35,14 @@
         <!-- 注释 -->
         <commentGenerator>
             <!-- 是否不生成注释 -->
-            <property name="suppressAllComments" value="false"/>
+            <property name="suppressAllComments" value="true"/>
             <!-- 不希望生成的注释中包含时间戳 -->
             <property name="suppressDate" value="true"/>
             <!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效-->
-            <property name="addRemarkComments" value="true"/>
-            <property name="add" value=""/>
+<!--            <property name="addRemarkComments" value="true"/>-->
+<!--            <property name="add" value=""/>-->
+<!--            <property name="author" value="leellun"/>-->
+<!--            <property name="dateFormat" value="yyyy-MM-dd"/>-->
         </commentGenerator>
 
 

@@ -50,7 +50,6 @@ public class FileUploader {
             System.out.println("pom.xml is successfully uploaded as pom.xml to `test` bucket." + response.versionId());
             Tags tags = minioClient.getObjectTags(GetObjectTagsArgs.builder().bucket("test").object("pom.xml").build());
             System.out.println(tags.get().get("name"));
-            System.out.println(minioClient.getObject(GetPresignedObjectUrlArgs.builder().bucket("test").method(Method.GET).object("pom.xml").build()));
         } catch (MinioException e) {
             System.out.println("Error occurred: " + e);
         } catch (KeyManagementException e) {
