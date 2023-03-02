@@ -23,6 +23,7 @@
         <module>boot-canal</module>
         <module>boot-mybatisplus</module>
         <module>boot-minio</module>
+        <module>boot-grpc</module>
     </modules>
     <name>springboot-learn</name>
     <properties>
