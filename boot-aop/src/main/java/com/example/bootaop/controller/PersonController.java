@@ -4,6 +4,7 @@ import com.example.bootaop.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -17,8 +18,8 @@ public class PersonController {
     @Autowired
     PersonService personService;
     @RequestMapping("/person")
-    public String getPerson() {
-        personService.save("");
-        return "";
+    public String getPerson(@RequestParam(value = "name",required = false) String name) {
+        personService.save(name);
+        return name;
     }
 }

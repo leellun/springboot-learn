@@ -5,5 +5,5 @@ package com.example.bootaop.service;
  * Date: 2022/9/2 09:00:28
  */
 public interface PersonService {
-    public void save(String name);
+    public String save(String name);
 }

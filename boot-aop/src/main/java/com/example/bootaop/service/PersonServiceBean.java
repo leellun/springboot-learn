@@ -8,13 +8,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PersonServiceBean implements PersonService {
-    public PersonServiceBean(){}
-    public void save(String name) {
-        if("3".equals(name))throw new RuntimeException();
+    public PersonServiceBean() {
+    }
+
+    public String save(String name) {
+        if ("3".equals(name)) {
+            throw new RuntimeException();
+        }
         System.out.println("我是save()方法");
         commit();
+        return name;
     }
-    public void commit(){
+
+    public void commit() {
         System.out.println(this);
     }
 }
